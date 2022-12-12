@@ -17,7 +17,7 @@
   height: 20vh;
 }
 
-#local-stream-container { 
+#host-stream-container { 
   position: relative; 
   display: inline-block;
 }
@@ -30,7 +30,7 @@
   height: 100%;
 }
 
-#local-video {
+#host-video {
   position: absolute;
   z-index: 1;
   height: 20vh;
@@ -66,7 +66,7 @@
   display: none;
 }
 
-#no-local-video, .no-video-overlay {
+#no-host-video, .no-video-overlay {
   position: absolute;
   z-index: 3;
   width: 100%;
