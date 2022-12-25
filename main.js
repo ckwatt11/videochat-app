@@ -41,7 +41,7 @@ let remoteTracks = {};
 
 client.init()
 
-function createRoom(userId){
+function createFeed(userId){
     let room = AgoraRTC.createStream({ // by default, the host will have audio and video enabled, and screen (sharing) disabled
         streamID: userId,
         video: true,
@@ -69,9 +69,15 @@ function createRoom(userId){
 }
 
 
-function joinRoom(){
-
+function joinRoom(uid, chnl, tkn){
     
+    client.join(tkn, chnl, uid, function(uid){
+        createFeed(uid);
+        console.log(`${uid} has joined the Room!`)
+        localTracks.camera.id = uid;
+    }, function(err){
+        console.log("Join Failed! :", err)
+    }); 
 
 }
 
