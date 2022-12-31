@@ -11,6 +11,7 @@ import { initializeInterface } from './userInterface.js';
 
 let client = AgoraRTC.createClient({mode:'rtc', codec:"vp8"}); 
 let remoteClient = ({mode: 'rtc', codec: "vp8"});
+let chName = 'agora-video-chat';
 
 let hostId = "";
 let isScrSharing = false; 
@@ -36,10 +37,15 @@ let localTracks = {
 
 let remoteTracks = {};
 
+function initAndJoin(appId, tkn, channelName, uid){
+    client.init(appId, function() {
 
-
-
-client.init()
+        console.log("Agora Client Initialized!")
+        joinRoom(chName, uid, tkn);
+    }, function(err){
+        console.log("Error: Agora client initialization unsuccessful: ", err);
+    });
+}    
 
 function createFeed(userId){
     let room = AgoraRTC.createStream({ // by default, the host will have audio and video enabled, and screen (sharing) disabled
@@ -56,7 +62,7 @@ function createFeed(userId){
         console.log("Room established!");
 
         client.publish(room, function(err){
-            console.log("Error. Couldn't join room! : ", err);
+            console.log("Error. Couldn't create/join room! : ", err);
         });
         
         initializeInterface(room);
@@ -70,7 +76,8 @@ function createFeed(userId){
 
 
 function joinRoom(uid, chnl, tkn){
-    
+    var tkn = genTkn();
+    var uId = null;
     client.join(tkn, chnl, uid, function(uid){
         createFeed(uid);
         console.log(`${uid} has joined the Room!`)
@@ -84,4 +91,15 @@ function joinRoom(uid, chnl, tkn){
 
 function exitRoom(){
 
+    client.leave(function() {
+        console.log(`User ${uid} has left the Room.`);
+    }, function(err){
+        console.log("Could not leave room, ", err);
+    });
+    
+
+}
+
+function genTkn(){
+    return null;
 }
